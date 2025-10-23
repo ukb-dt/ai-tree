@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UKUBONA Witnesses Loop</title>
+    <title>UKUBONA Tree - Five Layers</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
             color: #e0e0e0;
             padding: 40px 20px;
             margin: 0;
@@ -15,209 +15,348 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
         
-        .container {
-            max-width: 900px;
-            background: rgba(26, 26, 46, 0.8);
-            border: 3px solid #4a9eff;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(74, 158, 255, 0.2);
+        .tree-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 900px;
+            margin: 40px auto;
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
+        /* Sun at top */
         .sun {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 48px;
-            margin-bottom: 10px;
+            z-index: 10;
+            animation: pulse 3s ease-in-out infinite;
         }
         
-        .arrow-up {
-            font-size: 24px;
-            color: #ffd700;
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
         }
         
-        .light-label {
-            color: #ffd700;
-            font-size: 14px;
-            margin: 10px 0;
-        }
-        
-        .meta-layer {
-            background: rgba(74, 158, 255, 0.1);
-            border: 2px solid #4a9eff;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .meta-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #4a9eff;
-            margin-bottom: 5px;
-        }
-        
-        .meta-subtitle {
-            font-size: 14px;
-            color: #9ab;
-            font-style: italic;
-        }
-        
-        .layer {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #6c757d;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
+        /* Canopy - Layer 5 */
+        .canopy {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 140px;
+            background: rgba(74, 158, 255, 0.15);
+            border: 3px solid #4a9eff;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         
-        .layer:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #4a9eff;
-            transform: translateX(5px);
+        .canopy:hover {
+            background: rgba(74, 158, 255, 0.25);
+            transform: translateX(-50%) scale(1.05);
         }
         
+        /* Branches - Layer 4 */
+        .branches-left, .branches-right {
+            position: absolute;
+            top: 240px;
+            width: 220px;
+            height: 120px;
+            background: rgba(103, 232, 249, 0.12);
+            border: 3px solid #67e8f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .branches-left {
+            left: 15%;
+            border-radius: 50% 20% 45% 50% / 40% 20% 50% 60%;
+            transform: rotate(-10deg);
+        }
+        
+        .branches-right {
+            right: 15%;
+            border-radius: 20% 50% 50% 45% / 20% 40% 60% 50%;
+            transform: rotate(10deg);
+        }
+        
+        .branches-left:hover, .branches-right:hover {
+            background: rgba(103, 232, 249, 0.22);
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        /* Trunk - Layer 3 */
+        .trunk {
+            position: absolute;
+            top: 380px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 160px;
+            background: rgba(255, 215, 0, 0.12);
+            border: 3px solid #ffd700;
+            border-radius: 20% / 15%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .trunk:hover {
+            background: rgba(255, 215, 0, 0.22);
+            transform: translateX(-50%) scale(1.05);
+        }
+        
+        /* Roots - Layer 2 */
+        .roots {
+            position: absolute;
+            top: 560px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 130px;
+            background: rgba(255, 107, 107, 0.12);
+            border: 3px solid #ff6b6b;
+            border-radius: 10% 10% 50% 50% / 5% 5% 70% 70%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .roots:hover {
+            background: rgba(255, 107, 107, 0.22);
+            transform: translateX(-50%) scale(1.05);
+        }
+        
+        /* Soil - Layer 1 */
+        .soil {
+            position: absolute;
+            top: 710px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 450px;
+            height: 110px;
+            background: rgba(139, 69, 19, 0.3);
+            border: 3px solid #8b4513;
+            border-radius: 50% / 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .soil:hover {
+            background: rgba(139, 69, 19, 0.4);
+            transform: translateX(-50%) scale(1.05);
+        }
+        
+        /* Earth at bottom */
+        .earth {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+        }
+        
+        /* Text styling */
         .layer-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            color: #4a9eff;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+            text-align: center;
         }
         
         .layer-name {
-            font-size: 16px;
-            color: #67e8f9;
-            margin-bottom: 8px;
+            font-size: 14px;
+            margin-bottom: 4px;
+            text-align: center;
+            font-style: italic;
         }
         
         .layer-role {
-            font-size: 14px;
-            color: #ffd700;
+            font-size: 12px;
+            opacity: 0.8;
+            text-align: center;
             margin-bottom: 8px;
-        }
-        
-        .layer-description {
-            font-size: 13px;
-            color: #9ab;
-            margin-bottom: 12px;
         }
         
         .layer-link {
             display: inline-block;
-            background: #4a9eff;
+            background: rgba(255, 255, 255, 0.9);
             color: #1a1a2e;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 4px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 11px;
             transition: all 0.3s ease;
         }
         
         .layer-link:hover {
-            background: #67e8f9;
-            transform: scale(1.05);
+            background: #fff;
+            transform: scale(1.1);
         }
         
-        .flow-indicator {
-            text-align: center;
-            color: #ffd700;
-            font-size: 20px;
-            margin: 15px 0;
+        /* Connection lines */
+        .connection {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            transform-origin: top left;
         }
         
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #4a9eff;
+        .conn-sun-canopy {
+            top: 50px;
+            left: 50%;
+            width: 2px;
+            height: 30px;
+            margin-left: -1px;
         }
         
-        .footer-text {
-            font-size: 16px;
-            color: #67e8f9;
-            margin: 10px 0;
+        .conn-canopy-trunk {
+            top: 220px;
+            left: 50%;
+            width: 2px;
+            height: 160px;
+            margin-left: -1px;
         }
         
-        .earth {
-            font-size: 36px;
-            margin-top: 10px;
+        .conn-trunk-roots {
+            top: 540px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            margin-left: -1px;
+        }
+        
+        .conn-roots-soil {
+            top: 690px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            margin-left: -1px;
+        }
+        
+        /* Branch connections */
+        .conn-canopy-left {
+            top: 180px;
+            left: 35%;
+            width: 100px;
+            height: 2px;
+            transform: rotate(-25deg);
+        }
+        
+        .conn-canopy-right {
+            top: 180px;
+            right: 35%;
+            width: 100px;
+            height: 2px;
+            transform: rotate(25deg);
+        }
+        
+        @media (max-width: 768px) {
+            .tree-container {
+                height: 1000px;
+                transform: scale(0.8);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="sun">☀️</div>
-            <div class="arrow-up">▲</div>
-            <div class="light-label">← Light / Information</div>
-        </div>
+    <div class="tree-container">
+        <!-- Connection lines -->
+        <div class="connection conn-sun-canopy"></div>
+        <div class="connection conn-canopy-trunk"></div>
+        <div class="connection conn-canopy-left"></div>
+        <div class="connection conn-canopy-right"></div>
+        <div class="connection conn-trunk-roots"></div>
+        <div class="connection conn-roots-soil"></div>
         
-        <div class="meta-layer">
-            <div class="meta-title">[UKUBONA WITNESSES THIS LOOP]</div>
-            <div class="meta-subtitle">(Meta-layer observes)</div>
-            <div class="meta-subtitle">{Ivyabona vya Yehova}</div>
-        </div>
+        <!-- Sun -->
+        <div class="sun">☀️</div>
         
-        <div class="layer">
-            <div class="layer-title">5. COMMONS/GOOGLE</div>
-            <div class="layer-name">OKUBONA - Canopy</div>
-            <div class="layer-role">Archive/Document | Multimodal Interface</div>
-            <div class="layer-description">(Improved UX / Archive)</div>
-            <a href="https://ukb-dt.github.io/ntu/" class="layer-link">Learn More →</a>
-        </div>
+        <!-- Layer 5: Canopy -->
+        <a href="https://ukb-dt.github.io/ntu/" style="text-decoration: none;">
+            <div class="canopy">
+                <div class="layer-title" style="color: #4a9eff;">5. COMMONS/GOOGLE</div>
+                <div class="layer-name" style="color: #67e8f9;">OKUBONA - Canopy</div>
+                <div class="layer-role" style="color: #9ab;">Archive/Document | Multimodal</div>
+                <span class="layer-link">Explore →</span>
+            </div>
+        </a>
         
-        <div class="flow-indicator">↓ DATA FEEDS BACK: BACKPOP ↓</div>
+        <!-- Layer 4: Branches (split into two) -->
+        <a href="https://example.com/okukona-branches" style="text-decoration: none;">
+            <div class="branches-left">
+                <div class="layer-title" style="color: #67e8f9;">4. xAI</div>
+                <div class="layer-name" style="color: #4a9eff;">OKUKONA</div>
+                <div class="layer-role" style="color: #9ab;">Branches</div>
+                <span class="layer-link">Explore →</span>
+            </div>
+        </a>
         
-        <div class="layer">
-            <div class="layer-title">4. xAI</div>
-            <div class="layer-name">OKUKONA - Branches</div>
-            <div class="layer-role">Diverge/Explore | Novel outputs</div>
-            <div class="layer-description">(Grok/Tools)</div>
-            <a href="https://example.com/okukona-branches" class="layer-link">Learn More →</a>
-        </div>
+        <a href="https://example.com/okukona-branches" style="text-decoration: none;">
+            <div class="branches-right">
+                <div class="layer-title" style="color: #67e8f9;">Diverge</div>
+                <div class="layer-name" style="color: #4a9eff;">Explore</div>
+                <div class="layer-role" style="color: #9ab;">Grok/Tools</div>
+                <span class="layer-link">Explore →</span>
+            </div>
+        </a>
         
-        <div class="flow-indicator">↑ ↓</div>
+        <!-- Layer 3: Trunk -->
+        <a href="https://example.com/okukula-trunk" style="text-decoration: none;">
+            <div class="trunk">
+                <div class="layer-title" style="color: #ffd700;">3. ANTHROPIC</div>
+                <div class="layer-name" style="color: #ffed4e;">OKUKULA - Trunk</div>
+                <div class="layer-role" style="color: #9ab;">Mediate/Align | Safety</div>
+                <span class="layer-link">Explore →</span>
+            </div>
+        </a>
         
-        <div class="layer">
-            <div class="layer-title">3. ANTHROPIC</div>
-            <div class="layer-name">OKUKULA - Trunk</div>
-            <div class="layer-role">Mediate/Align | Safety/Limits</div>
-            <div class="layer-description">(Constitutional AI)</div>
-            <a href="https://example.com/okukula-trunk" class="layer-link">Learn More →</a>
-        </div>
+        <!-- Layer 2: Roots -->
+        <a href="https://example.com/okumera-roots" style="text-decoration: none;">
+            <div class="roots">
+                <div class="layer-title" style="color: #ff6b6b;">2. OPENAI</div>
+                <div class="layer-name" style="color: #ff8787;">OKUMERA - Roots</div>
+                <div class="layer-role" style="color: #9ab;">Converge/Learn | Extract patterns</div>
+                <span class="layer-link">Explore →</span>
+            </div>
+        </a>
         
-        <div class="flow-indicator">↑ ↓</div>
+        <!-- Layer 1: Soil -->
+        <a href="https://example.com/okuzala-soil" style="text-decoration: none;">
+            <div class="soil">
+                <div class="layer-title" style="color: #d2691e;">1. INTERNET</div>
+                <div class="layer-name" style="color: #cd853f;">OKUZALA - Soil</div>
+                <div class="layer-role" style="color: #9ab;">COMMONS | Birth/Substrate</div>
+                <span class="layer-link">Explore →</span>
+            </div>
+        </a>
         
-        <div class="layer">
-            <div class="layer-title">2. OPENAI</div>
-            <div class="layer-name">OKUMERA - Roots</div>
-            <div class="layer-role">Converge/Learn | Extract patterns</div>
-            <div class="layer-description">(GPT/Research)</div>
-            <a href="https://example.com/okumera-roots" class="layer-link">Learn More →</a>
-        </div>
-        
-        <div class="flow-indicator">↑ DATA FLOWS FORWARD: TRAIN ↑</div>
-        
-        <div class="layer">
-            <div class="layer-title">1. INTERNET</div>
-            <div class="layer-name">OKUZALA - Soil</div>
-            <div class="layer-role">Birth/Substrate</div>
-            <div class="layer-description">(COMMONS) - Raw data/text | {Multimodal inputs}</div>
-            <a href="https://example.com/okuzala-soil" class="layer-link">Learn More →</a>
-        </div>
-        
-        <div class="footer">
-            <div class="flow-indicator">↓</div>
-            <div class="footer-text">←── LOOP: Commons → improved Commons ──→</div>
-            <div class="earth">🌍 EARTH</div>
-        </div>
+        <!-- Earth -->
+        <div class="earth">🌍</div>
     </div>
 </body>
 </html>
