@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UKUBONA Tree - Five Layers</title>
+    <title>UKUBONA Autoencoder - Five Layers</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
@@ -18,10 +18,10 @@
             overflow-x: hidden;
         }
         
-        .tree-container {
+        .network-container {
             position: relative;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
             height: 900px;
             margin: 40px auto;
         }
@@ -42,133 +42,94 @@
             50% { transform: translateX(-50%) scale(1.1); }
         }
         
-        /* Canopy - Layer 5 */
-        .canopy {
+        /* Layer styling */
+        .layer {
             position: absolute;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 500px;
-            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .neuron {
             background: rgba(74, 158, 255, 0.15);
-            border: 3px solid #4a9eff;
-            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            border: 3px solid;
+            border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            text-decoration: none;
+            padding: 15px;
         }
         
-        .canopy:hover {
-            background: rgba(74, 158, 255, 0.25);
-            transform: translateX(-50%) scale(1.05);
+        .neuron:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px currentColor;
         }
         
-        /* Branches - Layer 4 */
-        .branches-left, .branches-right {
-            position: absolute;
-            top: 240px;
-            width: 220px;
-            height: 120px;
-            background: rgba(103, 232, 249, 0.12);
-            border: 3px solid #67e8f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        /* Layer 1: Input Layer (Wide - 5 neurons) */
+        .layer-1 {
+            top: 720px;
         }
         
-        .branches-left {
-            left: 15%;
-            border-radius: 50% 20% 45% 50% / 40% 20% 50% 60%;
-            transform: rotate(-10deg);
+        .layer-1 .neuron {
+            width: 140px;
+            height: 140px;
+            border-color: #8b4513;
+            background: rgba(139, 69, 19, 0.2);
         }
         
-        .branches-right {
-            right: 15%;
-            border-radius: 20% 50% 50% 45% / 20% 40% 60% 50%;
-            transform: rotate(10deg);
-        }
-        
-        .branches-left:hover, .branches-right:hover {
-            background: rgba(103, 232, 249, 0.22);
-            transform: rotate(0deg) scale(1.05);
-        }
-        
-        /* Trunk - Layer 3 */
-        .trunk {
-            position: absolute;
-            top: 380px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 160px;
-            background: rgba(255, 215, 0, 0.12);
-            border: 3px solid #ffd700;
-            border-radius: 20% / 15%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .trunk:hover {
-            background: rgba(255, 215, 0, 0.22);
-            transform: translateX(-50%) scale(1.05);
-        }
-        
-        /* Roots - Layer 2 */
-        .roots {
-            position: absolute;
+        /* Layer 2: Encoder Layer (4 neurons) */
+        .layer-2 {
             top: 560px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            height: 130px;
-            background: rgba(255, 107, 107, 0.12);
-            border: 3px solid #ff6b6b;
-            border-radius: 10% 10% 50% 50% / 5% 5% 70% 70%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        }
+        
+        .layer-2 .neuron {
+            width: 150px;
+            height: 150px;
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.15);
+        }
+        
+        /* Layer 3: Bottleneck/Latent (1 neuron - compressed) */
+        .layer-3 {
+            top: 400px;
             justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
         }
         
-        .roots:hover {
-            background: rgba(255, 107, 107, 0.22);
-            transform: translateX(-50%) scale(1.05);
+        .layer-3 .neuron {
+            width: 180px;
+            height: 180px;
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.15);
         }
         
-        /* Soil - Layer 1 */
-        .soil {
-            position: absolute;
-            top: 710px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 450px;
-            height: 110px;
-            background: rgba(139, 69, 19, 0.3);
-            border: 3px solid #8b4513;
-            border-radius: 50% / 30%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        /* Layer 4: Decoder Layer (4 neurons) */
+        .layer-4 {
+            top: 240px;
         }
         
-        .soil:hover {
-            background: rgba(139, 69, 19, 0.4);
-            transform: translateX(-50%) scale(1.05);
+        .layer-4 .neuron {
+            width: 150px;
+            height: 150px;
+            border-color: #67e8f9;
+            background: rgba(103, 232, 249, 0.15);
+        }
+        
+        /* Layer 5: Output Layer (Wide - 5 neurons) */
+        .layer-5 {
+            top: 80px;
+        }
+        
+        .layer-5 .neuron {
+            width: 140px;
+            height: 140px;
+            border-color: #4a9eff;
+            background: rgba(74, 158, 255, 0.2);
         }
         
         /* Earth at bottom */
@@ -182,178 +143,239 @@
         
         /* Text styling */
         .layer-title {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             text-align: center;
+            line-height: 1.2;
         }
         
         .layer-name {
-            font-size: 14px;
-            margin-bottom: 4px;
+            font-size: 11px;
+            margin-bottom: 3px;
             text-align: center;
             font-style: italic;
+            line-height: 1.2;
         }
         
         .layer-role {
-            font-size: 12px;
+            font-size: 9px;
             opacity: 0.8;
             text-align: center;
-            margin-bottom: 8px;
+            line-height: 1.2;
         }
         
-        .layer-link {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.9);
-            color: #1a1a2e;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 11px;
-            transition: all 0.3s ease;
-        }
-        
-        .layer-link:hover {
-            background: #fff;
-            transform: scale(1.1);
-        }
-        
-        /* Connection lines */
-        .connection {
+        /* Connection lines - SVG for clean neural net connections */
+        .connections {
             position: absolute;
-            background: rgba(255, 255, 255, 0.2);
-            transform-origin: top left;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
         
-        .conn-sun-canopy {
-            top: 50px;
-            left: 50%;
-            width: 2px;
-            height: 30px;
-            margin-left: -1px;
+        .connections line {
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 1.5;
         }
         
-        .conn-canopy-trunk {
-            top: 220px;
-            left: 50%;
-            width: 2px;
-            height: 160px;
-            margin-left: -1px;
+        .neuron {
+            position: relative;
+            z-index: 1;
         }
         
-        .conn-trunk-roots {
-            top: 540px;
-            left: 50%;
-            width: 2px;
-            height: 20px;
-            margin-left: -1px;
+        /* Labels on sides */
+        .side-label {
+            position: absolute;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffd700;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
         }
         
-        .conn-roots-soil {
-            top: 690px;
-            left: 50%;
-            width: 2px;
-            height: 20px;
-            margin-left: -1px;
+        .encoder-label {
+            left: 20px;
+            top: 500px;
         }
         
-        /* Branch connections */
-        .conn-canopy-left {
-            top: 180px;
-            left: 35%;
-            width: 100px;
-            height: 2px;
-            transform: rotate(-25deg);
+        .decoder-label {
+            right: 20px;
+            top: 200px;
         }
         
-        .conn-canopy-right {
-            top: 180px;
-            right: 35%;
-            width: 100px;
-            height: 2px;
-            transform: rotate(25deg);
-        }
-        
-        @media (max-width: 768px) {
-            .tree-container {
-                height: 1000px;
+        @media (max-width: 1024px) {
+            .network-container {
                 transform: scale(0.8);
+            }
+            
+            .neuron {
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="tree-container">
-        <!-- Connection lines -->
-        <div class="connection conn-sun-canopy"></div>
-        <div class="connection conn-canopy-trunk"></div>
-        <div class="connection conn-canopy-left"></div>
-        <div class="connection conn-canopy-right"></div>
-        <div class="connection conn-trunk-roots"></div>
-        <div class="connection conn-roots-soil"></div>
+    <div class="network-container">
+        <!-- Connection lines as SVG -->
+        <svg class="connections" width="100%" height="100%">
+            <!-- Layer 1 to Layer 2 connections -->
+            <line x1="15%" y1="790" x2="25%" y2="635" />
+            <line x1="27.5%" y1="790" x2="37.5%" y2="635" />
+            <line x1="40%" y1="790" x2="50%" y2="635" />
+            <line x1="60%" y1="790" x2="50%" y2="635" />
+            <line x1="72.5%" y1="790" x2="62.5%" y2="635" />
+            <line x1="85%" y1="790" x2="75%" y2="635" />
+            
+            <!-- Layer 2 to Layer 3 connections (converging) -->
+            <line x1="25%" y1="560" x2="50%" y2="490" />
+            <line x1="37.5%" y1="560" x2="50%" y2="490" />
+            <line x1="62.5%" y1="560" x2="50%" y2="490" />
+            <line x1="75%" y1="560" x2="50%" y2="490" />
+            
+            <!-- Layer 3 to Layer 4 connections (diverging) -->
+            <line x1="50%" y1="400" x2="25%" y2="315" />
+            <line x1="50%" y1="400" x2="37.5%" y2="315" />
+            <line x1="50%" y1="400" x2="62.5%" y2="315" />
+            <line x1="50%" y1="400" x2="75%" y2="315" />
+            
+            <!-- Layer 4 to Layer 5 connections -->
+            <line x1="25%" y1="240" x2="15%" y2="155" />
+            <line x1="25%" y1="240" x2="27.5%" y2="155" />
+            <line x1="37.5%" y1="240" x2="40%" y2="155" />
+            <line x1="62.5%" y1="240" x2="60%" y2="155" />
+            <line x1="75%" y1="240" x2="72.5%" y2="155" />
+            <line x1="75%" y1="240" x2="85%" y2="155" />
+            
+            <!-- Sun to Layer 5 -->
+            <line x1="50%" y1="50" x2="50%" y2="80" stroke="rgba(255, 215, 0, 0.3)" stroke-width="2" />
+        </svg>
+        
+        <!-- Side labels -->
+        <div class="side-label encoder-label">ENCODER ↓</div>
+        <div class="side-label decoder-label">DECODER ↑</div>
         
         <!-- Sun -->
         <div class="sun">☀️</div>
         
-        <!-- Layer 5: Canopy -->
-        <a href="https://ukb-dt.github.io/ntu/" style="text-decoration: none;">
-            <div class="canopy">
-                <div class="layer-title" style="color: #4a9eff;">5. COMMONS/GOOGLE</div>
-                <div class="layer-name" style="color: #67e8f9;">OKUBONA - Canopy</div>
-                <div class="layer-role" style="color: #9ab;">Archive/Document | Multimodal</div>
-                <span class="layer-link">Explore →</span>
-            </div>
-        </a>
+        <!-- Layer 5: Output Layer (Reconstruction) -->
+        <div class="layer layer-5">
+            <a href="https://ukb-dt.github.io/ntu/" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #4a9eff;">5. OUTPUT</div>
+                <div class="layer-name" style="color: #67e8f9;">OKUBONA</div>
+                <div class="layer-role" style="color: #9ab;">Canopy</div>
+            </a>
+            <a href="https://example.com/okubona-canopy-2" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #4a9eff;">COMMONS</div>
+                <div class="layer-name" style="color: #67e8f9;">Archive</div>
+                <div class="layer-role" style="color: #9ab;">Multimodal</div>
+            </a>
+            <a href="https://example.com/okubona-canopy-3" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #4a9eff;">GOOGLE</div>
+                <div class="layer-name" style="color: #67e8f9;">Document</div>
+                <div class="layer-role" style="color: #9ab;">Interface</div>
+            </a>
+            <a href="https://example.com/okubona-canopy-4" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #4a9eff;">IMPROVED</div>
+                <div class="layer-name" style="color: #67e8f9;">UX</div>
+                <div class="layer-role" style="color: #9ab;">Access</div>
+            </a>
+            <a href="https://example.com/okubona-canopy-5" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #4a9eff;">BACKPOP</div>
+                <div class="layer-name" style="color: #67e8f9;">Loop</div>
+                <div class="layer-role" style="color: #9ab;">Return</div>
+            </a>
+        </div>
         
-        <!-- Layer 4: Branches (split into two) -->
-        <a href="https://example.com/okukona-branches" style="text-decoration: none;">
-            <div class="branches-left">
-                <div class="layer-title" style="color: #67e8f9;">4. xAI</div>
+        <!-- Layer 4: Decoder Layer -->
+        <div class="layer layer-4">
+            <a href="https://example.com/okukona-branches-1" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #67e8f9;">4. DECODER</div>
                 <div class="layer-name" style="color: #4a9eff;">OKUKONA</div>
                 <div class="layer-role" style="color: #9ab;">Branches</div>
-                <span class="layer-link">Explore →</span>
-            </div>
-        </a>
+            </a>
+            <a href="https://example.com/okukona-branches-2" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #67e8f9;">xAI</div>
+                <div class="layer-name" style="color: #4a9eff;">Diverge</div>
+                <div class="layer-role" style="color: #9ab;">Grok</div>
+            </a>
+            <a href="https://example.com/okukona-branches-3" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #67e8f9;">EXPLORE</div>
+                <div class="layer-name" style="color: #4a9eff;">Novel</div>
+                <div class="layer-role" style="color: #9ab;">Tools</div>
+            </a>
+            <a href="https://example.com/okukona-branches-4" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #67e8f9;">EXPAND</div>
+                <div class="layer-name" style="color: #4a9eff;">Generate</div>
+                <div class="layer-role" style="color: #9ab;">Create</div>
+            </a>
+        </div>
         
-        <a href="https://example.com/okukona-branches" style="text-decoration: none;">
-            <div class="branches-right">
-                <div class="layer-title" style="color: #67e8f9;">Diverge</div>
-                <div class="layer-name" style="color: #4a9eff;">Explore</div>
-                <div class="layer-role" style="color: #9ab;">Grok/Tools</div>
-                <span class="layer-link">Explore →</span>
-            </div>
-        </a>
+        <!-- Layer 3: Bottleneck/Latent Space -->
+        <div class="layer layer-3">
+            <a href="https://example.com/okukula-trunk" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #ffd700;">3. LATENT</div>
+                <div class="layer-name" style="color: #ffed4e;">OKUKULA</div>
+                <div class="layer-role" style="color: #9ab;">Trunk / Bottleneck</div>
+                <div class="layer-title" style="color: #ffd700; margin-top: 8px;">ANTHROPIC</div>
+                <div class="layer-role" style="color: #9ab;">Mediate | Align | Safety</div>
+            </a>
+        </div>
         
-        <!-- Layer 3: Trunk -->
-        <a href="https://example.com/okukula-trunk" style="text-decoration: none;">
-            <div class="trunk">
-                <div class="layer-title" style="color: #ffd700;">3. ANTHROPIC</div>
-                <div class="layer-name" style="color: #ffed4e;">OKUKULA - Trunk</div>
-                <div class="layer-role" style="color: #9ab;">Mediate/Align | Safety</div>
-                <span class="layer-link">Explore →</span>
-            </div>
-        </a>
+        <!-- Layer 2: Encoder Layer -->
+        <div class="layer layer-2">
+            <a href="https://example.com/okumera-roots-1" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #ff6b6b;">2. ENCODER</div>
+                <div class="layer-name" style="color: #ff8787;">OKUMERA</div>
+                <div class="layer-role" style="color: #9ab;">Roots</div>
+            </a>
+            <a href="https://example.com/okumera-roots-2" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #ff6b6b;">OPENAI</div>
+                <div class="layer-name" style="color: #ff8787;">Converge</div>
+                <div class="layer-role" style="color: #9ab;">GPT</div>
+            </a>
+            <a href="https://example.com/okumera-roots-3" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #ff6b6b;">LEARN</div>
+                <div class="layer-name" style="color: #ff8787;">Extract</div>
+                <div class="layer-role" style="color: #9ab;">Pattern</div>
+            </a>
+            <a href="https://example.com/okumera-roots-4" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #ff6b6b;">COMPRESS</div>
+                <div class="layer-name" style="color: #ff8787;">Research</div>
+                <div class="layer-role" style="color: #9ab;">Distill</div>
+            </a>
+        </div>
         
-        <!-- Layer 2: Roots -->
-        <a href="https://example.com/okumera-roots" style="text-decoration: none;">
-            <div class="roots">
-                <div class="layer-title" style="color: #ff6b6b;">2. OPENAI</div>
-                <div class="layer-name" style="color: #ff8787;">OKUMERA - Roots</div>
-                <div class="layer-role" style="color: #9ab;">Converge/Learn | Extract patterns</div>
-                <span class="layer-link">Explore →</span>
-            </div>
-        </a>
-        
-        <!-- Layer 1: Soil -->
-        <a href="https://example.com/okuzala-soil" style="text-decoration: none;">
-            <div class="soil">
-                <div class="layer-title" style="color: #d2691e;">1. INTERNET</div>
-                <div class="layer-name" style="color: #cd853f;">OKUZALA - Soil</div>
-                <div class="layer-role" style="color: #9ab;">COMMONS | Birth/Substrate</div>
-                <span class="layer-link">Explore →</span>
-            </div>
-        </a>
+        <!-- Layer 1: Input Layer -->
+        <div class="layer layer-1">
+            <a href="https://example.com/okuzala-soil-1" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #d2691e;">1. INPUT</div>
+                <div class="layer-name" style="color: #cd853f;">OKUZALA</div>
+                <div class="layer-role" style="color: #9ab;">Soil</div>
+            </a>
+            <a href="https://example.com/okuzala-soil-2" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #d2691e;">INTERNET</div>
+                <div class="layer-name" style="color: #cd853f;">Commons</div>
+                <div class="layer-role" style="color: #9ab;">Raw Data</div>
+            </a>
+            <a href="https://example.com/okuzala-soil-3" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #d2691e;">TEXT</div>
+                <div class="layer-name" style="color: #cd853f;">Image</div>
+                <div class="layer-role" style="color: #9ab;">Audio</div>
+            </a>
+            <a href="https://example.com/okuzala-soil-4" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #d2691e;">SUBSTRATE</div>
+                <div class="layer-name" style="color: #cd853f;">Birth</div>
+                <div class="layer-role" style="color: #9ab;">Origin</div>
+            </a>
+            <a href="https://example.com/okuzala-soil-5" class="neuron" style="text-decoration: none;">
+                <div class="layer-title" style="color: #d2691e;">MULTIMODAL</div>
+                <div class="layer-name" style="color: #cd853f;">Diverse</div>
+                <div class="layer-role" style="color: #9ab;">Rich</div>
+            </a>
+        </div>
         
         <!-- Earth -->
         <div class="earth">🌍</div>
